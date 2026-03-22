@@ -1,14 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-
-interface ProfileData {
-  subject: string;
-  issuer: string;
-  name: string;
-  email: string;
-}
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,14 +10,13 @@ interface ProfileData {
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile implements OnInit {
-  private readonly http = inject(HttpClient);
+export class Profile {
+  private readonly document = inject(DOCUMENT);
 
-  readonly profile = signal<ProfileData | null>(null);
+  // Profile is guaranteed to be loaded by authGuard before this component renders.
+  readonly profile = inject(AuthService).profile;
 
-  ngOnInit(): void {
-    this.http.get<ProfileData>(`${environment.bffBaseUrl}/profile`).subscribe({
-      next: (data) => this.profile.set(data),
-    });
+  logout(): void {
+    this.document.location.href = `${environment.bffBaseUrl}/logout`;
   }
 }

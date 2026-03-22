@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { catchError, EMPTY } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -12,14 +12,19 @@ import { environment } from '../../environments/environment';
 })
 export class Home implements OnInit {
   private readonly document = inject(DOCUMENT);
-  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.http
-      .get(`${environment.bffBaseUrl}/profile`)
-      .pipe(catchError(() => EMPTY))
-      .subscribe(() => this.router.navigate(['/profile']));
+    // If a session already exists the profile will be in cache — no extra HTTP call.
+    // A null result means unauthenticated; stay on this page and show login options.
+    this.authService
+      .loadProfile()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((profile) => {
+        if (profile) this.router.navigate(['/profile']);
+      });
   }
 
   loginWithKeycloak(): void {
