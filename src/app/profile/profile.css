@@ -1,0 +1,37 @@
+.page {
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.profile-data {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 0.5rem 1rem;
+  margin-bottom: 2rem;
+}
+
+dt {
+  font-weight: 500;
+  color: #555;
+}
+
+dd {
+  margin: 0;
+  word-break: break-all;
+}
+
+.nav-link {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,16 @@
+@if (profile(); as p) {
+  <main class="page">
+    <h1>Profile</h1>
+    <dl class="profile-data">
+      <dt>Name</dt>
+      <dd>{{ p.name || '—' }}</dd>
+      <dt>Email</dt>
+      <dd>{{ p.email || '—' }}</dd>
+      <dt>Subject</dt>
+      <dd>{{ p.subject }}</dd>
+      <dt>Issuer</dt>
+      <dd>{{ p.issuer }}</dd>
+    </dl>
+    <a routerLink="/payments" class="nav-link">View Payments</a>
+  </main>
+}

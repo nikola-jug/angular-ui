@@ -1,0 +1,17 @@
+<main class="page">
+  <h1>Payments</h1>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @for (payment of payments(); track payment.id) {
+    <div class="payment-row">
+      <span class="payment-id">{{ payment.id }}</span>
+      <span>{{ payment.amount }} {{ payment.currency }}</span>
+      <span class="status" [class]="payment.status.toLowerCase()">{{ payment.status }}</span>
+    </div>
+  }
+
+  <a routerLink="/profile" class="nav-link">Back to Profile</a>
+</main>
